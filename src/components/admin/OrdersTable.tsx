@@ -43,7 +43,7 @@ export default function OrdersTable({ orders, onUpdateStatus, onCancelOrder }: O
             <th className="py-4 px-6">رقم الطلب</th>
             <th className="py-4 px-6">العميل</th>
             <th className="py-4 px-6">السيارة</th>
-            <th className="py-4 px-6">الخدمة</th>
+            <th className="py-4 px-6">الخدمات</th>
             <th className="py-4 px-6">العنوان والمنطقة</th>
             <th className="py-4 px-6">الموعد المحدد</th>
             <th className="py-4 px-6">تاريخ الحجز</th>
@@ -89,8 +89,8 @@ export default function OrdersTable({ orders, onUpdateStatus, onCancelOrder }: O
               </td>
 
               {/* Service */}
-              <td className="py-4 px-6 font-bold text-white">
-                {order.serviceType}
+              <td className="py-4 px-6 font-bold text-white max-w-xs truncate" title={order.serviceTypes?.join(' + ')}>
+                {order.serviceTypes?.join(' + ') || 'لا توجد خدمات'}
               </td>
 
               {/* Address */}

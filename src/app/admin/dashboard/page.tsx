@@ -76,7 +76,7 @@ export default function AdminDashboardPage() {
 
     // 3. Service Filter
     if (serviceFilter !== 'all') {
-      filteredOrders = filteredOrders.filter(order => order.serviceType === serviceFilter);
+      filteredOrders = filteredOrders.filter(order => order.serviceTypes && order.serviceTypes.includes(serviceFilter));
     }
 
     // 4. Sort Filter
@@ -171,7 +171,7 @@ export default function AdminDashboardPage() {
 
                 <DashboardStatsCard
                   title="الإيرادات المحققة"
-                  value={`${stats.totalRevenue} ر.س`}
+                  value={`${stats.totalRevenue} ج.م`}
                   icon={<DollarSignIcon size={22} />}
                   colorType="purple"
                 />

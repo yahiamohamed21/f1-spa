@@ -124,8 +124,8 @@ export default function OrderDetailsPanel({
             </h4>
             <div className="bg-zinc-900/40 border border-zinc-900 rounded-2xl p-5 space-y-3.5">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-zinc-500 font-bold">الخدمة المطلوبة:</span>
-                <span className="text-racing-red font-black">{order.serviceType}</span>
+                <span className="text-zinc-500 font-bold">الخدمات المطلوبة:</span>
+                <span className="text-racing-red font-black">{order.serviceTypes?.join(' + ') || 'لا توجد خدمات'}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-zinc-500 font-bold">موعد الحجز:</span>
@@ -137,7 +137,7 @@ export default function OrderDetailsPanel({
               <div className="flex justify-between items-center text-sm pt-2.5 border-t border-zinc-900">
                 <span className="text-zinc-500 font-bold">إجمالي المبلغ (شامل الضريبة):</span>
                 <span className="text-xl font-black text-white italic">
-                  {order.price} <span className="text-xs font-bold text-silver not-italic">ر.س</span>
+                  {order.price} <span className="text-xs font-bold text-silver not-italic">ج.م</span>
                 </span>
               </div>
             </div>

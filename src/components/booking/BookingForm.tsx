@@ -16,7 +16,7 @@ function BookingFormInner() {
     carType: '',
     carModel: '',
     carColor: '',
-    serviceType: '',
+    serviceTypes: [] as string[],
     address: '',
     preferredDate: '',
     preferredTime: '',
@@ -36,11 +36,23 @@ function BookingFormInner() {
       if (serviceId) {
         const matchedService = SERVICES.find(s => s.id === serviceId);
         if (matchedService) {
-          setFormData(prev => ({ ...prev, serviceType: matchedService.name }));
+          setFormData(prev => ({ ...prev, serviceTypes: [matchedService.name] }));
         }
       }
     }
   }, [searchParams]);
+
+  // Calculate total price dynamically
+  const calculateTotalPrice = () => {
+    let total = 0;
+    formData.serviceTypes.forEach(serviceName => {
+      const matched = SERVICES.find(s => s.name === serviceName);
+      if (matched) {
+        total += matched.price;
+      }
+    });
+    return total;
+  };
 
   // Validation logic
   const validateForm = () => {
@@ -54,12 +66,12 @@ function BookingFormInner() {
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'رقم الهاتف مطلوب';
-    } else if (!/^(05|5)\d{8}$/.test(formData.phone.trim())) {
-      newErrors.phone = 'يرجى إدخال رقم جوال سعودي صحيح (مثال: 0501234567)';
+    } else if (!/^(01|05)\d{9,10}$/.test(formData.phone.trim())) {
+      newErrors.phone = 'يرجى إدخال رقم هاتف صحيح (مثال: 01012345678)';
     }
 
     if (!formData.carType.trim()) {
-      newErrors.carType = 'نوع الشركة المصنعة مطلوب (مثل: تويوتا)';
+      newErrors.carType = 'نوع السيارة مطلوب (مثل: تويوتا)';
     }
 
     if (!formData.carModel.trim()) {
@@ -70,8 +82,8 @@ function BookingFormInner() {
       newErrors.carColor = 'لون السيارة مطلوب';
     }
 
-    if (!formData.serviceType) {
-      newErrors.serviceType = 'يرجى اختيار الخدمة المطلوبة';
+    if (!formData.serviceTypes || formData.serviceTypes.length === 0) {
+      newErrors.serviceTypes = 'يرجى اختيار خدمة واحدة على الأقل';
     }
 
     if (!formData.address.trim()) {
@@ -109,7 +121,7 @@ function BookingFormInner() {
     if (!validateForm()) {
       // Scroll to the first error
       const firstErrorKey = Object.keys(errors)[0];
-      const errorElement = document.getElementsByName(firstErrorKey)[0];
+      const errorElement = document.getElementsByName(firstErrorKey)[0] || document.getElementById(firstErrorKey);
       if (errorElement) {
         errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
@@ -118,7 +130,7 @@ function BookingFormInner() {
 
     setIsSubmitting(true);
 
-    // Simulate short network delay for realism
+    // Simulate network delay
     setTimeout(() => {
       try {
         const order = createOrder(formData);
@@ -185,7 +197,7 @@ function BookingFormInner() {
                   id="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="05XXXXXXXX"
+                  placeholder="01XXXXXXXXX"
                   className={`block w-full pr-10 pl-4 py-3 bg-zinc-900 border text-right dir-ltr ${
                     errors.phone ? 'border-red-500 focus:ring-red-500/20' : 'border-zinc-800 focus:ring-racing-red/20'
                   } rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-4 transition-all`}
@@ -242,7 +254,7 @@ function BookingFormInner() {
                 id="carModel"
                 value={formData.carModel}
                 onChange={handleChange}
-                placeholder="مثال: RX 350 - 2023"
+                placeholder="مثال: كامري 2023"
                 className={`block w-full px-4 py-3 bg-zinc-900 border ${
                   errors.carModel ? 'border-red-500 focus:ring-red-500/20' : 'border-zinc-800 focus:ring-racing-red/20'
                 } rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-4 transition-all`}
@@ -282,29 +294,72 @@ function BookingFormInner() {
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {/* Service Type */}
-            <div className="md:col-span-3">
-              <label htmlFor="serviceType" className="block text-sm font-bold text-silver mb-2">
-                الخدمة المطلوبة *
+            {/* Service Selection Card Grid */}
+            <div className="md:col-span-3" id="serviceTypes">
+              <label className="block text-sm font-bold text-silver mb-3">
+                الخدمات المطلوبة (يمكنك اختيار أكثر من خدمة) *
               </label>
-              <select
-                name="serviceType"
-                id="serviceType"
-                value={formData.serviceType}
-                onChange={handleChange}
-                className={`block w-full px-4 py-3 bg-zinc-900 border ${
-                  errors.serviceType ? 'border-red-500 focus:ring-red-500/20' : 'border-zinc-800 focus:ring-racing-red/20'
-                } rounded-xl text-white focus:outline-none focus:ring-4 transition-all`}
-              >
-                <option value="" className="text-zinc-500">اختر نوع الغسيل / التنظيف...</option>
-                {SERVICES.map((service) => (
-                  <option key={service.id} value={service.name} className="bg-black text-white">
-                    {service.name} ({service.price} ر.س - {service.duration})
-                  </option>
-                ))}
-              </select>
-              {errors.serviceType && (
-                <p className="mt-1.5 text-xs font-bold text-red-500">{errors.serviceType}</p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {SERVICES.map((service) => {
+                  const isSelected = formData.serviceTypes.includes(service.name);
+                  return (
+                    <div
+                      key={service.id}
+                      onClick={() => {
+                        setFormData(prev => {
+                          const isAlreadySelected = prev.serviceTypes.includes(service.name);
+                          const updatedServices = isAlreadySelected
+                            ? prev.serviceTypes.filter(name => name !== service.name)
+                            : [...prev.serviceTypes, service.name];
+                          
+                          // Clear error if at least one is selected
+                          if (updatedServices.length > 0 && errors.serviceTypes) {
+                            setErrors(errs => {
+                              const next = { ...errs };
+                              delete next.serviceTypes;
+                              return next;
+                            });
+                          }
+                          return { ...prev, serviceTypes: updatedServices };
+                        });
+                      }}
+                      className={`
+                        cursor-pointer rounded-2xl p-5 border text-right transition-all flex flex-col justify-between select-none relative overflow-hidden group
+                        ${isSelected 
+                          ? 'bg-racing-red/10 border-racing-red shadow-red-glow/20' 
+                          : 'bg-zinc-900 border-zinc-850 hover:border-zinc-700'}
+                      `}
+                    >
+                      {/* Check indicator circle */}
+                      <div className={`absolute top-4 left-4 w-5 h-5 rounded-full border flex items-center justify-center transition-all ${
+                        isSelected ? 'bg-racing-red border-racing-red text-white' : 'border-zinc-700 bg-black'
+                      }`}>
+                        {isSelected && (
+                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.5" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+
+                      <div className="pl-6">
+                        <h4 className="font-black text-white text-base mb-1 group-hover:text-racing-red transition-colors">{service.name}</h4>
+                        <p className="text-xs text-zinc-500 leading-relaxed mb-4">{service.description}</p>
+                      </div>
+
+                      <div className="flex items-center justify-between border-t border-zinc-900/60 pt-3 mt-auto">
+                        <span className="text-xs text-zinc-500">{service.duration}</span>
+                        <span className="font-black text-racing-red italic">
+                          {service.price} <span className="text-[10px] not-italic text-silver">ج.م</span>
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {errors.serviceTypes && (
+                <p className="mt-2 text-xs font-bold text-red-500">{errors.serviceTypes}</p>
               )}
             </div>
 
@@ -323,7 +378,7 @@ function BookingFormInner() {
                   id="address"
                   value={formData.address}
                   onChange={handleChange}
-                  placeholder="الحي، الشارع، رقم المبنى أو تفاصيل المعالم القريبة"
+                  placeholder="المحافظة، الحي، الشارع، المعالم المميزة"
                   className={`block w-full pr-10 pl-4 py-3 bg-zinc-900 border ${
                     errors.address ? 'border-red-500 focus:ring-red-500/20' : 'border-zinc-800 focus:ring-racing-red/20'
                   } rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-4 transition-all`}
@@ -409,6 +464,24 @@ function BookingFormInner() {
             </div>
           </div>
         </div>
+
+        {/* Live Total Price Box */}
+        {formData.serviceTypes.length > 0 && (
+          <div className="bg-zinc-950/60 border border-zinc-900 rounded-2xl p-5 flex items-center justify-between shadow-red-glow/5 border-l-4 border-l-racing-red">
+            <div className="flex flex-col text-right">
+              <span className="text-xs text-zinc-500 font-bold">الخدمات المختارة: ({formData.serviceTypes.length})</span>
+              <span className="text-sm text-silver mt-1 font-semibold">
+                {formData.serviceTypes.join(' + ')}
+              </span>
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="text-xs text-zinc-500 font-bold">إجمالي التكلفة</span>
+              <span className="text-3xl font-black text-white italic mt-1">
+                {calculateTotalPrice()} <span className="text-sm not-italic text-silver font-bold">ج.م</span>
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Submit button */}
         <div className="flex justify-end pt-4">

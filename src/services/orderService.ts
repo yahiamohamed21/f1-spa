@@ -5,7 +5,7 @@ export const SERVICES: Service[] = [
     id: 'exterior',
     name: 'غسيل خارجي',
     description: 'غسيل خارجي بالرغوة النفاثة وتجفيف بالمايكروفايبر وتلميع الإطارات.',
-    price: 50,
+    price: 150,
     duration: '30 دقيقة',
     icon: 'Sparkles',
   },
@@ -13,7 +13,7 @@ export const SERVICES: Service[] = [
     id: 'interior',
     name: 'غسيل داخلي',
     description: 'كنس شامل للمقاعد والأرضيات، تنظيف التابلوه والأبواب، وتعطير السيارة.',
-    price: 60,
+    price: 200,
     duration: '45 دقيقة',
     icon: 'Wind',
   },
@@ -21,7 +21,7 @@ export const SERVICES: Service[] = [
     id: 'full_wash',
     name: 'غسيل كامل',
     description: 'غسيل خارجي متكامل مع تنظيف داخلي عميق وتلميع التابلوه وتطهير فتحات التكييف.',
-    price: 100,
+    price: 350,
     duration: '60 دقيقة',
     icon: 'Droplet',
   },
@@ -29,7 +29,7 @@ export const SERVICES: Service[] = [
     id: 'polishing',
     name: 'تلميع السيارة',
     description: 'إزالة الخدوش السطحية وتلميع الهيكل الخارجي بطبقة شمع واقية لاستعادة لمعان الوكالة.',
-    price: 250,
+    price: 800,
     duration: '3 ساعات',
     icon: 'Shield',
   },
@@ -37,7 +37,7 @@ export const SERVICES: Service[] = [
     id: 'upholstery',
     name: 'تنظيف الفرش',
     description: 'غسيل وتطهير مقاعد السيارة المخملية أو الجلدية بأجهزة البخار والمواد الخاصة لإزالة البقع الصعبة.',
-    price: 180,
+    price: 600,
     duration: '2 ساعة',
     icon: 'Activity',
   },
@@ -45,7 +45,7 @@ export const SERVICES: Service[] = [
     id: 'sterilization',
     name: 'تعقيم داخلي',
     description: 'تعقيم شامل للسيارة من الداخل بجهاز الأوزون والبخار للقضاء على 99% من البكتيريا والروائح الكريهة.',
-    price: 80,
+    price: 250,
     duration: '30 دقيقة',
     icon: 'CheckCircle',
   },
@@ -56,35 +56,35 @@ const DEFAULT_ORDERS: Order[] = [
     id: 'order-1',
     orderNumber: 'F1-2491',
     customerName: 'أحمد محمود',
-    phone: '0501234567',
+    phone: '01012345678',
     carType: 'تويوتا',
     carModel: 'كامري 2023',
     carColor: 'أبيض لؤلؤي',
-    serviceType: 'غسيل كامل',
-    address: 'شارع الملك فهد، حي الياسمين، الرياض',
+    serviceTypes: ['غسيل كامل'],
+    address: 'شارع التسعين، التجمع الخامس، القاهرة',
     preferredDate: '2026-07-01',
     preferredTime: '10:00 ص',
     notes: 'يرجى التركيز على تنظيف صندوق السيارة الخلفي.',
     status: 'delivered',
-    price: 100,
+    price: 350,
     createdAt: '2026-06-29T14:30:00.000Z',
     updatedAt: '2026-06-29T16:00:00.000Z',
   },
   {
     id: 'order-2',
     orderNumber: 'F1-9823',
-    customerName: 'سارة العتيبي',
-    phone: '0559876543',
+    customerName: 'سارة أحمد',
+    phone: '01298765432',
     carType: 'هيونداي',
     carModel: 'توسان 2022',
     carColor: 'رمادي معدني',
-    serviceType: 'تلميع السيارة',
-    address: 'حي الروضة، جدة',
+    serviceTypes: ['تلميع السيارة'],
+    address: 'حي الدقي، الجيزة',
     preferredDate: '2026-06-30',
     preferredTime: '04:00 م',
     notes: 'هل يمكن حجز موعد مبكر؟',
     status: 'cleaning_in_progress',
-    price: 250,
+    price: 800,
     createdAt: '2026-06-30T01:15:00.000Z',
     updatedAt: '2026-06-30T03:00:00.000Z',
   },
@@ -92,17 +92,17 @@ const DEFAULT_ORDERS: Order[] = [
     id: 'order-3',
     orderNumber: 'F1-5541',
     customerName: 'خالد الدوسري',
-    phone: '0534455667',
+    phone: '01544556677',
     carType: 'مرسيدس',
     carModel: 'C200 2024',
     carColor: 'أسود ميتاليك',
-    serviceType: 'تعقيم داخلي',
-    address: 'شارع التخصصي، حي المعذر، الرياض',
+    serviceTypes: ['تعقيم داخلي', 'غسيل داخلي'],
+    address: 'المعادي، القاهرة',
     preferredDate: '2026-06-30',
     preferredTime: '06:30 م',
     notes: '',
     status: 'new',
-    price: 80,
+    price: 450,
     createdAt: '2026-06-30T02:45:00.000Z',
     updatedAt: '2026-06-30T02:45:00.000Z',
   },
@@ -110,17 +110,17 @@ const DEFAULT_ORDERS: Order[] = [
     id: 'order-4',
     orderNumber: 'F1-1120',
     customerName: 'محمد القحطاني',
-    phone: '0567788990',
+    phone: '01177889900',
     carType: 'لكزس',
     carModel: 'RX 2023',
     carColor: 'فضي',
-    serviceType: 'تنظيف الفرش',
-    address: 'طريق الملك عبدالله، حي القدس، الرياض',
+    serviceTypes: ['تنظيف الفرش'],
+    address: 'حي مصر الجديدة، القاهرة',
     preferredDate: '2026-07-02',
     preferredTime: '11:00 ص',
     notes: 'يوجد بقع قهوة على المقاعد الأمامية.',
     status: 'accepted',
-    price: 180,
+    price: 600,
     createdAt: '2026-06-29T18:20:00.000Z',
     updatedAt: '2026-06-29T19:00:00.000Z',
   },
@@ -128,17 +128,17 @@ const DEFAULT_ORDERS: Order[] = [
     id: 'order-5',
     orderNumber: 'F1-8845',
     customerName: 'عبدالرحمن الشهري',
-    phone: '0543322110',
+    phone: '01033221100',
     carType: 'فورد',
     carModel: 'تورس 2021',
     carColor: 'أزرق كحلي',
-    serviceType: 'غسيل خارجي',
-    address: 'حي الشاطئ، الدمام',
+    serviceTypes: ['غسيل خارجي'],
+    address: 'سموحة، الإسكندرية',
     preferredDate: '2026-06-30',
     preferredTime: '08:00 م',
     notes: 'الرجاء الاتصال قبل الوصول بـ ١٥ دقيقة.',
     status: 'driver_on_the_way',
-    price: 50,
+    price: 150,
     createdAt: '2026-06-30T03:00:00.000Z',
     updatedAt: '2026-06-30T03:15:00.000Z',
   }
@@ -159,25 +159,31 @@ const initializeStorage = () => {
 initializeStorage();
 
 export const getOrders = (): Order[] => {
-  // TODO: Replace this mock function with GET /api/orders
   if (!isBrowser) return [];
   const ordersJson = localStorage.getItem(LOCAL_STORAGE_KEY);
   return ordersJson ? JSON.parse(ordersJson) : [];
 };
 
 export const getOrderById = (id: string): Order | undefined => {
-  // TODO: Replace this mock function with GET /api/orders/:id
   const orders = getOrders();
   return orders.find(order => order.id === id || order.orderNumber === id);
 };
 
 export const createOrder = (orderData: Omit<Order, 'id' | 'orderNumber' | 'price' | 'status' | 'createdAt' | 'updatedAt'>): Order => {
-  // TODO: Replace this mock function with POST /api/orders
   const orders = getOrders();
   
-  // Find matching service price
-  const matchedService = SERVICES.find(s => s.name === orderData.serviceType || s.id === orderData.serviceType);
-  const price = matchedService ? matchedService.price : 100;
+  // Calculate price as sum of matched services
+  let price = 0;
+  if (Array.isArray(orderData.serviceTypes)) {
+    orderData.serviceTypes.forEach(serviceName => {
+      const matchedService = SERVICES.find(s => s.name === serviceName || s.id === serviceName);
+      price += matchedService ? matchedService.price : 150;
+    });
+  } else {
+    // Fallback if somehow not an array
+    const matchedService = SERVICES.find(s => s.name === (orderData as any).serviceType || s.id === (orderData as any).serviceType);
+    price = matchedService ? matchedService.price : 150;
+  }
   
   // Generate random order number in format F1-XXXX
   const randomNum = Math.floor(1000 + Math.random() * 9000);
@@ -203,7 +209,6 @@ export const createOrder = (orderData: Omit<Order, 'id' | 'orderNumber' | 'price
 };
 
 export const updateOrderStatus = (id: string, status: OrderStatus): Order | undefined => {
-  // TODO: Replace this mock function with PATCH /api/orders/:id/status
   if (!isBrowser) return undefined;
   const orders = getOrders();
   let updatedOrder: Order | undefined;
@@ -225,12 +230,10 @@ export const updateOrderStatus = (id: string, status: OrderStatus): Order | unde
 };
 
 export const cancelOrder = (id: string): Order | undefined => {
-  // TODO: Replace this mock function with POST /api/orders/:id/cancel
   return updateOrderStatus(id, 'cancelled');
 };
 
 export const searchOrders = (query: string): Order[] => {
-  // TODO: Replace this mock function with GET /api/orders?search=:query
   const orders = getOrders();
   if (!query.trim()) return orders;
   
@@ -250,7 +253,6 @@ export interface FilterOptions {
 }
 
 export const filterOrders = (filters: FilterOptions): Order[] => {
-  // TODO: Replace this mock function with GET /api/orders with query parameters
   let orders = getOrders();
   
   if (filters.status && filters.status !== 'all') {
@@ -258,13 +260,12 @@ export const filterOrders = (filters: FilterOptions): Order[] => {
   }
   
   if (filters.serviceType && filters.serviceType !== 'all') {
-    orders = orders.filter(order => order.serviceType === filters.serviceType);
+    orders = orders.filter(order => order.serviceTypes && order.serviceTypes.includes(filters.serviceType!));
   }
   
   if (filters.sortBy === 'oldest') {
     orders.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
   } else {
-    // Default newest first
     orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
   
@@ -272,7 +273,6 @@ export const filterOrders = (filters: FilterOptions): Order[] => {
 };
 
 export const getDashboardStats = (): DashboardStats => {
-  // TODO: Replace this mock function with GET /api/dashboard/stats
   const orders = getOrders();
   
   const stats: DashboardStats = {

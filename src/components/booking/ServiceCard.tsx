@@ -60,7 +60,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
         <div className="flex flex-col">
           <span className="text-[10px] text-zinc-500 font-bold uppercase">السعر</span>
           <span className="text-2xl font-black text-white italic">
-            {service.price} <span className="text-xs font-bold text-silver not-italic">ر.س</span>
+            {service.price} <span className="text-xs font-bold text-silver not-italic">ج.م</span>
           </span>
         </div>
         

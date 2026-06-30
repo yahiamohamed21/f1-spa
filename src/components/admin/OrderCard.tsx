@@ -72,8 +72,10 @@ export default function OrderCard({ order, onUpdateStatus, onCancelOrder }: Orde
           </div>
         </div>
         <div className="space-y-1">
-          <span className="text-zinc-500 font-bold block">الخدمة</span>
-          <span className="text-white font-bold block">{order.serviceType}</span>
+          <span className="text-zinc-500 font-bold block">الخدمات ({order.serviceTypes?.length || 0})</span>
+          <span className="text-white font-bold block truncate" title={order.serviceTypes?.join(' + ')}>
+            {order.serviceTypes?.join(' + ') || 'لا توجد خدمات'}
+          </span>
         </div>
       </div>
 

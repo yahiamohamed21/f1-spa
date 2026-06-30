@@ -27,7 +27,7 @@ export interface Order {
   carType: string;
   carModel: string;
   carColor: string;
-  serviceType: string; // The service name/id
+  serviceTypes: string[]; // The selected services
   address: string;
   preferredDate: string;
   preferredTime: string;
